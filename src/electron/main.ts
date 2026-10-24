@@ -1,6 +1,7 @@
 import { app, BrowserWindow} from "electron"
 import path from "path"
 import { isDev } from "./utils.js"
+import { pollResouces } from "./resourceManager.js"
 
 
 app.whenReady().then(() => {
@@ -10,4 +11,5 @@ app.whenReady().then(() => {
     } else {
         mainWindow.loadFile(path.join(app.getAppPath(), "dist-react", "index.html"))
     }
+    pollResouces();
 })
