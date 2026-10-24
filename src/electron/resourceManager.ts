@@ -1,16 +1,17 @@
 import osUtils from 'os-utils';
 import fs from 'fs';
 import os from 'os';
+import { ipcWebContentsSend } from './utils.js';
 
 const POLL_INTERVAL = 500;
 
 
-export function pollResouces(mainWindow?: Electron.BrowserWindow) {
+export function pollResouces(mainWindow: Electron.BrowserWindow) {
     setInterval(async () => {
        const cpuUsage = await getCpuUsage();
        const ramUsage = await getRamUsage();
        const storageUsage = getStorageUsage();
-      mainWindow?.webContents.send('statistic', {
+      ipcWebContentsSend('statistic', mainWindow.webContents, {
         cpuUsage,
         ramUsage,
         storageUsage: storageUsage.usage,
@@ -31,7 +32,7 @@ export function getStaticData() {
     }
 }
 
-function getCpuUsage() {
+function getCpuUsage(): Promise<number> {
     return new Promise<number>(resolve => { 
         osUtils.cpuUsage(resolve);
         // 等效于
