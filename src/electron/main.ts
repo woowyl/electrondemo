@@ -2,10 +2,16 @@ import { app, BrowserWindow} from "electron"
 import path from "path"
 import { isDev } from "./utils.js"
 import { pollResouces } from "./resourceManager.js"
+import { getPreloadPath } from "./pathResolver.js"
 
 
 app.whenReady().then(() => {
-    const mainWindow = new BrowserWindow({})
+    const mainWindow = new BrowserWindow({
+        webPreferences: {
+            // title: "my-electron-app",
+            preload: getPreloadPath(),
+        }
+    })
     if (isDev()) {
         mainWindow.loadURL("http://localhost:9100")
     } else {
