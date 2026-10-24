@@ -1,5 +1,7 @@
 import osUtils from 'os-utils';
 import fs from 'fs';
+import os from 'os';
+
 const POLL_INTERVAL = 500;
 
 
@@ -14,6 +16,19 @@ export function pollResouces() {
         storageUsage: storageUsage.usage
       })
     }, POLL_INTERVAL);
+}
+
+export function getStaticData() {
+    const totalStorage = getStorageUsage().total;
+    const cpuModel = os.cpus()[0].model;
+
+    const totalMemoryGB = Math.floor(osUtils.totalmem() / (1024)); // GB
+
+    return {
+        totalStorage,
+        cpuModel,
+        totalMemoryGB
+    }
 }
 
 function getCpuUsage() {
